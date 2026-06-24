@@ -240,7 +240,7 @@ GitHub:
 https://github.com/rahul20051122
 
 LinkedIn:
-(Add Your LinkedIn Profile Link)
+(https://www.linkedin.com/in/koniki-rahul-kumar-7a7a8b339?utm_source=share_via&utm_content=profile&utm_medium=member_android)
 
 ---
 
