@@ -185,7 +185,7 @@ http://127.0.0.1:5000
 
 Add Screenshot Here
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](dashboard.png)
 
 ---
 
@@ -193,7 +193,7 @@ Add Screenshot Here
 
 Add Screenshot Here
 
-![Register](screenshots/register.png)
+![Register](register.png)
 
 ---
 
@@ -201,7 +201,7 @@ Add Screenshot Here
 
 Add Screenshot Here
 
-![Capture](screenshots/capture.png)
+![Capture](capture.png)
 
 ---
 
@@ -209,7 +209,7 @@ Add Screenshot Here
 
 Add Screenshot Here
 
-![Attendance](screenshots/attendance.png)
+![Attendance](attendance.png)
 
 ---
 
@@ -217,7 +217,7 @@ Add Screenshot Here
 
 Add Screenshot Here
 
-![Analytics](screenshots/analytics.png)
+![Analytics](analytics.png)
 
 ---
 
