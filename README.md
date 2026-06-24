@@ -259,6 +259,6 @@ LinkedIn:
 ✔ Modern Flask Web Application
 
 ✔ Final Year CSE Project
+---
 ⭐ Support
-
 If you found this project useful, please consider giving it a ⭐ on GitHub.
