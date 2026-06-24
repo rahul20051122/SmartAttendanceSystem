@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A futuristic Smart Attendance System powered by AI face recognition, tracking historical presence records.">
+    <title>{% block title %}Smart Attendance Platform{% endblock %}</title>
+    <!-- Load Google Fonts 'Poppins', 'Inter', and 'Plus Jakarta Sans' globally -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Load Bootstrap 5.3 CDN globally -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Load Bootstrap Icons CDN globally -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Link the external custom visual stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Soft floating light ambient particles -->
+    <div class="particles-container">
+        <div class="particle" style="left: 15%; width: 5px; height: 5px; animation-delay: 0s; animation-duration: 22s; background: rgba(7, 27, 58, 0.05);"></div>
+        <div class="particle" style="left: 40%; width: 7px; height: 7px; animation-delay: -5s; animation-duration: 28s; background: rgba(7, 27, 58, 0.04);"></div>
+        <div class="particle" style="left: 70%; width: 4px; height: 4px; animation-delay: -10s; animation-duration: 20s; background: rgba(7, 27, 58, 0.05);"></div>
+    </div>
+
+    <!-- Floating Glass Header Navigation -->
+    <header class="container" style="padding-bottom: 0;">
+        <nav class="navbar" id="main-navigation">
+            <a href="{{ url_for('home') }}" class="navbar-brand">
+                <i class="bi bi-cpu-fill"></i>
+                SmartAttendance
+            </a>
+            <div class="nav-links d-none d-md-flex">
+                <a href="{{ url_for('home') }}" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+                <a href="{% if request.path == '/' %}#dashboard-view{% else %}{{ url_for('home') }}#dashboard-view{% endif %}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('analytics_page') }}" class="nav-link {% if request.path == '/analytics' %}active{% endif %}">Analytics</a>
+                <a href="{{ url_for('camera_test') }}" class="nav-link {% if request.path == '/camera_test' %}active{% endif %}">Diagnostics</a>
+                <a href="{{ url_for('about_page') }}" class="nav-link {% if request.path == '/about' %}active{% endif %}">About</a>
+            </div>
+            <div>
+                <a href="#" class="btn-nav-login">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container">
+        <!-- Display Flask Flash Messages with glowing notifications styling -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                            {% if category == 'success' %}
+                                <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                            {% else %}
+                                <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                            {% endif %}
+                            <div>{{ message }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Content injection block -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer block -->
+    <footer style="text-align: center; color: var(--text-secondary); padding: 3rem 0; font-size: 0.85rem; opacity: 0.8;">
+        <p>&copy; 2026 Smart Attendance Platform. Powered by AI Biometrics.</p>
+    </footer>
+
+    <!-- College Email Login Modal -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>College Email Login</h2>
+            </div>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="modal-body">
+                    <div class="modal-error" id="login-error"></div>
+                    <div class="form-group">
+                        <label for="login-email">College Email Address</label>
+                        <input type="email" id="login-email" class="form-control" placeholder="username@college.edu" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn btn-action-outline" id="close-modal-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal and Field Validation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginModal = document.getElementById('login-modal');
+            const loginBtn = document.querySelector('.btn-nav-login');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const loginError = document.getElementById('login-error');
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+
+            if (loginBtn && loginModal) {
+                loginBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loginModal.style.display = 'flex';
+                    // Force DOM reflow to allow transform transition to trigger smoothly
+                    void loginModal.offsetWidth;
+                    loginModal.classList.add('active');
+                    loginError.style.display = 'none';
+                    emailInput.value = '';
+                    passwordInput.value = '';
+                    emailInput.focus();
+                });
+            }
+
+            const closeModal = () => {
+                if (loginModal) {
+                    loginModal.classList.remove('active');
+                    setTimeout(() => {
+                        if (!loginModal.classList.contains('active')) {
+                            loginModal.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            };
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeModal);
+            }
+
+            if (loginModal) {
+                loginModal.addEventListener('click', (e) => {
+                    if (e.target === loginModal) {
+                        closeModal();
+                    }
+                });
+            }
+
+            window.handleLogin = (event) => {
+                event.preventDefault();
+                const emailValue = emailInput.value.trim();
+                // Matches official college.edu or its subdomains like student@college.edu or faculty@dept.college.edu
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?college\.edu$/i;
+
+                if (!emailRegex.test(emailValue)) {
+                    loginError.textContent = "Please login using your official college email address.";
+                    loginError.style.display = 'block';
+                    return;
+                }
+
+                // If valid college email, continue login and redirect to dashboard
+                window.location.href = "{{ url_for('home') }}";
+            };
+        });
+    </script>
+</body>
+</html>

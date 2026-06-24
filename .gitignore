@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+
+# Dataset Images
+dataset/
+
+# Database
+attendance.db
+
+# Face Recognition Model
+trainer.yml
+
+# Log Files
+*.log
+absent_notifier.log
+
+# VS Code
+.vscode/
+
+# Environment Variables
+.env

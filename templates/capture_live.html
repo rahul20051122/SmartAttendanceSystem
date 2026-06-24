@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Live Face Capture - Smart Attendance Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-11">
+        <!-- Modern 3D Glassmorphism Panel Container -->
+        <div class="glass-card p-4" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; backdrop-filter: blur(16px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); transform: translateZ(0);">
+            <div class="row align-items-center">
+                
+                <!-- Left Column: Student Metadata and Progress Metrics -->
+                <div class="col-md-5 pe-md-4">
+                    <h2 class="text-white mb-3" style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; text-shadow: 0 0 10px rgba(0,215,230,0.3);">Face Capture Setup</h2>
+                    <p class="text-secondary mb-4" style="font-size: 0.88rem; line-height: 1.6; color: #a1b0cb !important; opacity: 0.9;">
+                        Position your face clearly within the webcam framing border under stable lighting. Rotate your head slowly when capturing starts to ensure robust dataset variety for better recognition accuracy.
+                    </p>
+                    
+                    <!-- Student details inside a smaller matching glass panel -->
+                    <div class="p-3 mb-4" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 1.1rem; box-shadow: inset 0 0 15px rgba(255,255,255,0.02);">
+                        <div class="mb-2 text-white" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(0,215,230,0.85) !important;">Active Enrolment Profile</div>
+                        <div class="h5 text-white mb-1" style="font-weight: 700;">{{ student_name }}</div>
+                        <div class="text-secondary mb-1" style="font-size: 0.85rem; color: #a1b0cb !important;">Roll Number: <strong>{{ roll_number }}</strong></div>
+                        <div class="text-secondary mb-0" style="font-size: 0.85rem; color: #a1b0cb !important;">Department: <strong>{{ department }}</strong></div>
+                    </div>
+
+                    <!-- Progress Section featuring the Circular Animation and Stats -->
+                    <div class="d-flex align-items-center mb-4">
+                        <!-- Progress Circle Container -->
+                        <div class="position-relative me-4" style="width: 80px; height: 80px; filter: drop-shadow(0 0 10px rgba(0,215,230,0.15));">
+                            <svg width="80" height="80" viewBox="0 0 80 80" class="progress-ring">
+                                <circle class="progress-ring__background" stroke="rgba(255, 255, 255, 0.08)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+                                <circle class="progress-ring__circle" stroke="#00d7e6" stroke-width="6" stroke-linecap="round" fill="transparent" r="34" cx="40" cy="40" style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.3s ease;"/>
+                            </svg>
+                            <div class="position-absolute top-50 start-50 translate-middle text-white h5 mb-0" id="progress-percent" style="font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em;">0%</div>
+                        </div>
+
+                        <!-- Status text labels -->
+                        <div>
+                            <div class="text-white h6 mb-1" style="font-weight: 700; transition: color 0.3s ease;" id="status-label">Initialising Webcam...</div>
+                            <div class="text-secondary" style="font-size: 0.85rem; color: #a1b0cb !important;" id="counter-label">0 / 50 samples captured</div>
+                        </div>
+                    </div>
+
+                    <!-- Horizontal Progress Bar -->
+                    <div class="progress mb-4" style="height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 5px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" role="progressbar" style="width: 0%; background: linear-gradient(90deg, #00d7e6, #00b0bd); transition: width 0.3s ease;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    
+                    <a href="{{ url_for('home') }}" class="btn d-inline-flex align-items-center text-decoration-none" style="padding: 0.5rem 1.25rem; font-size: 0.88rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.15) !important; color: #fff !important; background: rgba(255,255,255,0.02) !important; transition: all 0.3s; border-radius: 0.75rem;">
+                        <i class="bi bi-arrow-left me-2"></i> Cancel & Return
+                    </a>
+                </div>
+
+                <!-- Right Column: Interactive Video Stream Display -->
+                <div class="col-md-7 text-center mt-4 mt-md-0">
+                    <div class="position-relative overflow-hidden" style="background: #061121; border: 2px solid rgba(0, 215, 230, 0.25); border-radius: 1.5rem; box-shadow: 0 10px 30px rgba(0, 215, 230, 0.15); max-width: 640px; margin: 0 auto;">
+                        
+                        <!-- Video Feed Stream Image -->
+                        <img src="{{ url_for('video_feed_capture', student_id=student_id) }}" alt="Live Webcam Feed" class="img-fluid" id="webcam-feed" style="width: 100%; height: auto; display: block; border-radius: calc(1.5rem - 2px);">
+                        
+                        <!-- Internal border glow visual effect -->
+                        <div class="position-absolute top-0 start-0 w-100 h-100" style="pointer-events: none; border-radius: calc(1.5rem - 2px); box-shadow: inset 0 0 35px rgba(0,215,230,0.18);"></div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Glassmorphism Success Modal Pop-up -->
+<div class="modal-overlay" id="success-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 17, 33, 0.85); backdrop-filter: blur(12px); justify-content: center; align-items: center; z-index: 9999; opacity: 0; transition: opacity 0.4s ease;">
+    <div class="glass-card text-center p-5" style="max-width: 450px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 2rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); transform: scale(0.85); transition: transform 0.4s ease;">
+        
+        <!-- Large Green Check Icon wrapper -->
+        <div class="mb-4 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: rgba(21, 205, 114, 0.12); border: 2px solid rgba(21, 205, 114, 0.45); border-radius: 50%; box-shadow: 0 0 30px rgba(21, 205, 114, 0.25);">
+            <i class="bi bi-check-lg text-success" style="font-size: 2.8rem; animation: popCheckIcon 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;"></i>
+        </div>
+        
+        <h3 class="text-white mb-2" style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;">Capture Completed</h3>
+        <p class="text-success mb-4" style="font-weight: 700; font-size: 1.15rem; letter-spacing: 0.02em;">Face Dataset Created Successfully</p>
+        <p class="text-secondary mb-0" style="font-size: 0.88rem; color: #a1b0cb !important; opacity: 0.8;">Automatically returning to dashboard...</p>
+        
+    </div>
+</div>
+
+<style>
+/* CSS Animations */
+@keyframes popCheckIcon {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-1px);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const studentId = "{{ student_id }}";
+    
+    // SVG Circular Progress calculation setup
+    const circle = document.querySelector('.progress-ring__circle');
+    const radius = circle.r.baseVal.value;
+    const circumference = radius * 2 * Math.PI;
+    
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    circle.style.strokeDashoffset = circumference;
+    
+    function setProgress(percent) {
+        const offset = circumference - (percent / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+        document.getElementById('progress-percent').textContent = `${Math.round(percent)}%`;
+    }
+
+    // Capture Progress Polling Routine
+    let pollInterval = setInterval(() => {
+        fetch(`/capture_progress/${studentId}`)
+            .then(res => res.json())
+            .then(data => {
+                const count = data.progress;
+                const percent = (count / 50) * 100;
+                
+                // Update interface components
+                setProgress(percent);
+                document.getElementById('progress-bar').style.width = `${percent}%`;
+                document.getElementById('progress-bar').setAttribute('aria-valuenow', percent);
+                document.getElementById('counter-label').textContent = `${count} / 50 samples captured`;
+                
+                if (count > 0 && count < 50) {
+                    const statusLabel = document.getElementById('status-label');
+                    statusLabel.textContent = "Capturing Face Samples...";
+                    statusLabel.style.color = "#00d7e6";
+                }
+                
+                if (count >= 50) {
+                    clearInterval(pollInterval);
+                    const statusLabel = document.getElementById('status-label');
+                    statusLabel.textContent = "Dataset Captured!";
+                    statusLabel.style.color = "#15cd72";
+                    
+                    // Launch Success Modal overlay
+                    const modal = document.getElementById('success-modal');
+                    modal.style.display = 'flex';
+                    // Force DOM recalculation for smooth transition animations
+                    void modal.offsetWidth;
+                    modal.style.opacity = '1';
+                    modal.querySelector('.glass-card').style.transform = 'scale(1)';
+                    
+                    // Delay redirect to allow user to view completed success screen
+                    setTimeout(() => {
+                        window.location.href = "{{ url_for('home') }}";
+                    }, 2200);
+                }
+            })
+            .catch(err => {
+                console.error("[Face Capture] Error requesting progress stats:", err);
+            });
+    }, 400);
+});
+</script>
+{% endblock %}

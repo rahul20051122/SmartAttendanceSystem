@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Daily Report - Smart Attendance Platform{% endblock %}
+
+{% block content %}
+<div class="card p-4 p-md-5 border-0 animate-fade-in-up" style="margin-top: 1.5rem; background: rgba(255, 255, 255, 0.45) !important;">
+    
+    <!-- Top summary panel: Header title and total records count -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h1 class="h2 mb-1" style="font-weight: 800; font-family: 'Poppins', sans-serif; color: var(--navy); letter-spacing: -1px;">
+                Daily Attendance Report
+            </h1>
+            <p class="text-secondary mb-0" style="color: var(--navy) !important; opacity: 0.85;">Active presence verification logs recorded today</p>
+        </div>
+        <div>
+            <span class="badge badge-info shadow-sm px-3 py-2 fs-8">
+                <i class="bi bi-clock me-1"></i> Today's Records: {{ records|length if records else 0 }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Attendance log table using custom styling classes -->
+    {% if records %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Roll Number</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <td style="color: var(--navy); opacity: 0.7;">#{{ record.id }}</td>
+                            <td style="color: var(--navy); opacity: 0.7;">UID-{{ record.student_id }}</td>
+                            <td class="fw-semibold">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="avatar rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; font-size: 0.72rem; background: rgba(7, 27, 58, 0.04); border: 1px solid rgba(7, 27, 58, 0.08); color: var(--navy);">
+                                        {{ record.name[:2]|upper }}
+                                    </div>
+                                    {{ record.name }}
+                                </div>
+                            </td>
+                            <td style="color: var(--navy); opacity: 0.85;">{{ record.roll_number }}</td>
+                            <td style="color: var(--navy); opacity: 0.85;">{{ record.date }}</td>
+                            <td style="color: var(--navy); opacity: 0.85;">{{ record.time }}</td>
+                            <td>
+                                <span class="badge badge-success px-3 py-1.5 rounded-pill">
+                                    <i class="bi bi-check-lg me-1"></i> {{ record.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <!-- Empty state layout when no records exist -->
+        <div class="empty-state border border-secondary border-opacity-5 rounded-4" style="background: rgba(255, 255, 255, 0.25);">
+            <div class="empty-state-icon">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+            <h3>No presence logs today</h3>
+            <p class="mb-0 text-secondary fs-8" style="color: var(--navy) !important; opacity: 0.8;">No attendance records have been compiled for today's session yet.</p>
+        </div>
+    {% endif %}
+
+    <!-- Action Back to Dashboard button at bottom -->
+    <div class="mt-4 pt-3 border-top border-secondary border-opacity-10 d-flex justify-content-start">
+        <a href="{{ url_for('home') }}" class="btn btn-action-outline px-4 py-2" style="width: auto; border-radius: 30px !important;">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance Analytics - Smart Attendance Platform{% endblock %}
+
+{% block content %}
+<!-- Include Chart.js via CDN for Dashboard Visualizations -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Header Title Panel -->
+<div class="card p-4 p-md-5 border-0 animate-fade-in-up" style="margin-top: 1.5rem; background: rgba(255, 255, 255, 0.45) !important;">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h1 class="h2 mb-1" style="font-weight: 800; font-family: 'Poppins', sans-serif; color: var(--navy); letter-spacing: -1px;">
+                Attendance Analytics Dashboard
+            </h1>
+            <p class="text-secondary mb-0" style="color: var(--navy) !important; opacity: 0.85;">
+                Real-time insights, metrics aggregation, presence trends, and attendance alerts.
+            </p>
+        </div>
+        <div>
+            <a href="{{ url_for('home') }}" class="btn btn-action-outline px-4 py-2" style="width: auto; border-radius: 30px !important;">
+                <i class="bi bi-arrow-left me-1"></i> Dashboard Console
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Glass Stats Grid -->
+<div class="row g-4 mb-5 animate-fade-in-up" style="animation-delay: 0.05s;">
+    <!-- Metric 1: Total Students -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-3d border-0 m-0 float-animation float-delay-1 text-center" style="padding: 1.5rem !important; height: 100%;">
+            <div class="fs-2 text-primary mb-2"><i class="bi bi-people-fill"></i></div>
+            <p class="form-label mb-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">Total Students</p>
+            <h3 class="fw-bold mb-1" style="font-size: 2.2rem; font-weight: 800; color: var(--navy);">
+                {{ summary.total_students }}
+            </h3>
+            <p class="fs-8 text-secondary mb-0">Registered profiles</p>
+        </div>
+    </div>
+    
+    <!-- Metric 2: Total Records -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-3d border-0 m-0 float-animation float-delay-2 text-center" style="padding: 1.5rem !important; height: 100%;">
+            <div class="fs-2 text-primary mb-2"><i class="bi bi-journal-check"></i></div>
+            <p class="form-label mb-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">Total Records</p>
+            <h3 class="fw-bold mb-1" style="font-size: 2.2rem; font-weight: 800; color: var(--navy);">
+                {{ summary.total_records }}
+            </h3>
+            <p class="fs-8 text-secondary mb-0">Saved database logs</p>
+        </div>
+    </div>
+    
+    <!-- Metric 3: Present Today -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-3d border-0 m-0 float-animation text-center" style="padding: 1.5rem !important; height: 100%;">
+            <div class="fs-2 mb-2" style="color: var(--success-text) !important;"><i class="bi bi-person-check-fill"></i></div>
+            <p class="form-label mb-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">Present Today</p>
+            <h3 class="fw-bold mb-1" style="font-size: 2.2rem; font-weight: 800; color: var(--navy);">
+                {{ summary.present_today }}
+            </h3>
+            <p class="fs-8 text-secondary mb-0">Attendance marked</p>
+        </div>
+    </div>
+    
+    <!-- Metric 4: Absent Today -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-3d border-0 m-0 float-animation float-delay-1 text-center" style="padding: 1.5rem !important; height: 100%;">
+            <div class="fs-2 mb-2" style="color: var(--error-text) !important;"><i class="bi bi-person-x-fill"></i></div>
+            <p class="form-label mb-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">Absent Today</p>
+            <h3 class="fw-bold mb-1" style="font-size: 2.2rem; font-weight: 800; color: var(--navy);">
+                {{ summary.absent_today }}
+            </h3>
+            <p class="fs-8 text-secondary mb-0">Remaining students</p>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row Grid -->
+<div class="row g-4 mb-5 animate-fade-in-up" style="animation-delay: 0.1s;">
+    <!-- Chart A: Monthly Trend -->
+    <div class="col-lg-6">
+        <div class="card mb-0 h-100">
+            <h2 class="card-title border-bottom-0 pb-0 mb-4" style="font-size: 1.15rem;">
+                <i class="bi bi-calendar-range-fill text-primary"></i> Monthly Attendance Volume
+            </h2>
+            <div style="height: 280px; position: relative;">
+                <canvas id="monthly-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chart B: Individual Student Rates -->
+    <div class="col-lg-6">
+        <div class="card mb-0 h-100">
+            <h2 class="card-title border-bottom-0 pb-0 mb-4" style="font-size: 1.15rem;">
+                <i class="bi bi-bar-chart-fill text-primary"></i> Student Attendance Rates (%)
+            </h2>
+            <div style="height: 280px; position: relative;">
+                <canvas id="percentage-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Registry Insights & Low Attendance warnings -->
+<div class="row g-4 mb-5 animate-fade-in-up" style="animation-delay: 0.15s;">
+    <!-- Section 1: Top 5 Regular Students -->
+    <div class="col-lg-6">
+        <div class="card mb-0 h-100">
+            <h2 class="card-title border-bottom-0 pb-0 mb-4" style="font-size: 1.15rem;">
+                <i class="bi bi-star-fill text-warning"></i> Top 5 Regular Students
+            </h2>
+            {% if top_students %}
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Roll Number</th>
+                                <th class="text-center">Days Present</th>
+                                <th>Attendance %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in top_students %}
+                                <tr>
+                                    <td class="fw-semibold">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="avatar rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; font-size: 0.72rem; background: rgba(7, 27, 58, 0.04); border: 1px solid rgba(7, 27, 58, 0.08); color: var(--navy);">
+                                                {{ s.name[:2]|upper }}
+                                            </div>
+                                            <div>
+                                                <div style="font-size: 0.88rem;">{{ s.name }}</div>
+                                                <small class="badge badge-info px-1.5 py-0.5" style="font-size: 0.6rem; transform: scale(0.9); display: inline-block;">{{ s.department }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="font-size: 0.85rem;">{{ s.roll_number }}</td>
+                                    <td class="text-center fw-bold" style="font-size: 0.85rem;">{{ s.present_count }} / {{ total_days }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress w-100" style="height: 6px; background: rgba(7, 27, 58, 0.06); border-radius: 10px; overflow: hidden;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ s.percentage }}%; height: 100%; border-radius: 10px; background-color: #059669 !important;"></div>
+                                            </div>
+                                            <span class="fw-bold" style="font-size: 0.8rem; color: #059669;">{{ s.percentage }}%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state py-4">
+                    <i class="bi bi-people-fill text-secondary opacity-50 fs-2"></i>
+                    <p class="mt-2 text-secondary mb-0">No student profiles registered.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Section 2: Low Attendance Warning -->
+    <div class="col-lg-6">
+        <div class="card mb-0 h-100">
+            <h2 class="card-title border-bottom-0 pb-0 mb-4" style="font-size: 1.15rem;">
+                <i class="bi bi-exclamation-triangle-fill text-danger" style="color: var(--error-text) !important;"></i> Low Attendance Warnings (< 75%)
+            </h2>
+            
+            {% if total_days == 0 %}
+                <div class="alert alert-success border-0 w-100" role="alert" style="background-color: rgba(0, 215, 230, 0.08) !important; color: #00b0bd !important; border-color: rgba(0, 215, 230, 0.15) !important;">
+                    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                    <div style="font-size: 0.85rem;">No attendance sheets have been marked yet. Metrics will compute upon marking presence.</div>
+                </div>
+            {% elif low_attendance_warnings %}
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Roll Number</th>
+                                <th class="text-center">Days Present</th>
+                                <th>Attendance %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in low_attendance_warnings %}
+                                <tr>
+                                    <td class="fw-semibold">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="avatar rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; font-size: 0.72rem; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.15); color: var(--error-text);">
+                                                {{ s.name[:2]|upper }}
+                                            </div>
+                                            <div>
+                                                <div style="font-size: 0.88rem;">{{ s.name }}</div>
+                                                <small class="badge badge-info px-1.5 py-0.5" style="font-size: 0.6rem; transform: scale(0.9); display: inline-block; background-color: rgba(239, 68, 68, 0.08) !important; color: #dc2626 !important; border-color: rgba(239, 68, 68, 0.2) !important;">{{ s.department }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="font-size: 0.85rem;">{{ s.roll_number }}</td>
+                                    <td class="text-center fw-bold text-danger" style="font-size: 0.85rem; color: var(--error-text) !important;">{{ s.present_count }} / {{ total_days }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress w-100" style="height: 6px; background: rgba(7, 27, 58, 0.06); border-radius: 10px; overflow: hidden;">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: {{ s.percentage }}%; height: 100%; border-radius: 10px; background-color: var(--error-text) !important;"></div>
+                                            </div>
+                                            <span class="fw-bold text-danger" style="font-size: 0.8rem; color: var(--error-text) !important;">{{ s.percentage }}%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-success border-0 w-100" role="alert">
+                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                    <div style="font-size: 0.85rem;">Great job! Every registered student has a satisfactory attendance rate (75% or above).</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Back to top visual link -->
+<div class="mt-4 pt-3 border-top border-secondary border-opacity-10 d-flex justify-content-start animate-fade-in-up" style="animation-delay: 0.2s;">
+    <a href="{{ url_for('home') }}" class="btn btn-action-outline px-4 py-2" style="width: auto; border-radius: 30px !important;">
+        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+    </a>
+</div>
+
+<!-- Chart initialization scripts -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Monthly Attendance Line Chart
+        const monthlyCtx = document.getElementById('monthly-chart');
+        if (monthlyCtx) {
+            const mLabels = {{ monthly_labels|tojson }};
+            const mValues = {{ monthly_values|tojson }};
+            
+            const ctx = monthlyCtx.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+            gradient.addColorStop(0, 'rgba(0, 215, 230, 0.3)');
+            gradient.addColorStop(1, 'rgba(0, 215, 230, 0.0)');
+            
+            new Chart(monthlyCtx, {
+                type: 'line',
+                data: {
+                    labels: mLabels.length > 0 ? mLabels : ['No Data'],
+                    datasets: [{
+                        label: 'Attendance Count',
+                        data: mValues.length > 0 ? mValues : [0],
+                        borderColor: '#00d7e6',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#071b3a',
+                        pointBorderColor: '#ffffff',
+                        pointHoverRadius: 7,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(7, 27, 58, 0.04)' },
+                            ticks: {
+                                precision: 0,
+                                color: '#071b3a',
+                                font: { family: 'Poppins', size: 10 }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#071b3a',
+                                font: { family: 'Poppins', size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 2. Student Attendance Percentage Bar Chart
+        const percentageCtx = document.getElementById('percentage-chart');
+        if (percentageCtx) {
+            const sNames = {{ student_names|tojson }};
+            const sPcts = {{ student_pcts|tojson }};
+            
+            new Chart(percentageCtx, {
+                type: 'bar',
+                data: {
+                    labels: sNames.length > 0 ? sNames : ['No Students'],
+                    datasets: [{
+                        label: 'Attendance Rate',
+                        data: sPcts.length > 0 ? sPcts : [0],
+                        backgroundColor: sPcts.length > 0 ? sPcts.map(pct => pct < 75.0 ? 'rgba(239, 68, 68, 0.65)' : 'rgba(0, 215, 230, 0.65)') : ['rgba(0, 215, 230, 0.65)'],
+                        borderColor: sPcts.length > 0 ? sPcts.map(pct => pct < 75.0 ? '#dc2626' : '#00d7e6') : ['#00d7e6'],
+                        borderWidth: 1.5,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            grid: { color: 'rgba(7, 27, 58, 0.04)' },
+                            ticks: {
+                                color: '#071b3a',
+                                callback: value => value + '%',
+                                font: { family: 'Poppins', size: 10 }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#071b3a',
+                                font: { family: 'Poppins', size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 3D Card Hover Tilt logic
+        const tiltCards = document.querySelectorAll('.card-3d');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xc = rect.width / 2;
+                const yc = rect.height / 2;
+                
+                const tiltX = (yc - y) / 12;
+                const tiltY = (x - xc) / 12;
+                
+                card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transition = 'none';
+            });
+            
+            card.style.transformStyle = 'preserve-3d';
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+        });
+        
+        // Stagger fade-in animations on load
+        document.querySelectorAll('.animate-fade-in-up').forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.08}s`;
+        });
+    });
+</script>
+{% endblock %}

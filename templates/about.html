@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}About & Instructions - Smart Attendance Platform{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in-up" style="margin-top: 1.5rem; padding-bottom: 3rem;">
+    <!-- Title Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 mb-3 text-uppercase" style="font-weight: 900; font-family: 'Poppins', sans-serif; color: var(--navy); letter-spacing: -1px;">
+            About the Platform
+        </h1>
+        <p style="color: var(--navy); font-weight: 500; opacity: 0.85; max-width: 600px; margin: 0 auto; font-size: 1.05rem;">
+            Discover the inner workings, key features, and operating procedures of our automated attendance ecosystem.
+        </p>
+    </div>
+
+    <!-- Overview & How It Works -->
+    <div class="row g-4 mb-5">
+        <!-- Overview Card -->
+        <div class="col-lg-6">
+            <div class="card border-0 h-100" style="background: rgba(255, 255, 255, 0.45) !important; padding: 2.5rem !important;">
+                <h2 class="mb-3" style="color: var(--navy); font-weight: 800; font-family: 'Poppins', sans-serif;">
+                    <i class="bi bi-info-circle-fill text-primary me-2"></i> Project Overview
+                </h2>
+                <p style="color: var(--navy); font-size: 1rem; line-height: 1.7; opacity: 0.9; margin-bottom: 2rem;">
+                    Smart Attendance Management System is a web-based platform that automates attendance tracking for students and faculty using secure authentication and real-time monitoring.
+                </p>
+
+                <h3 class="mb-3" style="color: var(--navy); font-weight: 700; font-family: 'Poppins', sans-serif; font-size: 1.25rem;">
+                    <i class="bi bi-gift-fill text-primary me-2"></i> Benefits
+                </h3>
+                <ul class="list-unstyled d-flex flex-column gap-2.5" style="color: var(--navy);">
+                    <li class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                        <span>Reduces manual work</span>
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                        <span>Improves accuracy</span>
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                        <span>Saves time</span>
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                        <span>Provides instant reports</span>
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                        <span>Prevents attendance manipulation</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- How It Works Flow -->
+        <div class="col-lg-6">
+            <div class="card border-0 h-100" style="background: rgba(255, 255, 255, 0.45) !important; padding: 2.5rem !important;">
+                <h2 class="mb-4" style="color: var(--navy); font-weight: 800; font-family: 'Poppins', sans-serif;">
+                    <i class="bi bi-gear-wide-connected text-primary me-2"></i> How It Works
+                </h2>
+                
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4" style="background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(7, 27, 58, 0.05);">
+                        <div class="p-2 rounded-3 text-primary fw-bold text-center" style="background: rgba(0, 215, 230, 0.1); min-width: 40px;">Step 1</div>
+                        <div>
+                            <p class="mb-0 text-secondary" style="color: var(--navy) !important; opacity: 0.9; font-size: 0.92rem; font-weight: 600;">User logs in using official college email.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4" style="background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(7, 27, 58, 0.05);">
+                        <div class="p-2 rounded-3 text-primary fw-bold text-center" style="background: rgba(0, 215, 230, 0.1); min-width: 40px;">Step 2</div>
+                        <div>
+                            <p class="mb-0 text-secondary" style="color: var(--navy) !important; opacity: 0.9; font-size: 0.92rem; font-weight: 600;">System verifies user identity.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4" style="background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(7, 27, 58, 0.05);">
+                        <div class="p-2 rounded-3 text-primary fw-bold text-center" style="background: rgba(0, 215, 230, 0.1); min-width: 40px;">Step 3</div>
+                        <div>
+                            <p class="mb-0 text-secondary" style="color: var(--navy) !important; opacity: 0.9; font-size: 0.92rem; font-weight: 600;">Student attendance is recorded.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4" style="background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(7, 27, 58, 0.05);">
+                        <div class="p-2 rounded-3 text-primary fw-bold text-center" style="background: rgba(0, 215, 230, 0.1); min-width: 40px;">Step 4</div>
+                        <div>
+                            <p class="mb-0 text-secondary" style="color: var(--navy) !important; opacity: 0.9; font-size: 0.92rem; font-weight: 600;">Attendance data is stored securely.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4" style="background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(7, 27, 58, 0.05);">
+                        <div class="p-2 rounded-3 text-primary fw-bold text-center" style="background: rgba(0, 215, 230, 0.1); min-width: 40px;">Step 5</div>
+                        <div>
+                            <p class="mb-0 text-secondary" style="color: var(--navy) !important; opacity: 0.9; font-size: 0.92rem; font-weight: 600;">Faculty can monitor and generate reports.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Features Section -->
+    <div class="mb-5">
+        <h2 class="mb-4 text-center" style="color: var(--navy); font-weight: 800; font-family: 'Poppins', sans-serif;">
+            Key Features
+        </h2>
+        <div class="row g-3">
+            {% set features = [
+                ('Student Attendance Tracking', 'bi-person-check'),
+                ('Faculty Dashboard', 'bi-columns-gap'),
+                ('Attendance Reports', 'bi-file-earmark-bar-graph'),
+                ('Real-Time Monitoring', 'bi-display'),
+                ('Attendance Analytics', 'bi-graph-up-arrow'),
+                ('Secure Login', 'bi-shield-lock'),
+                ('Email Verification', 'bi-envelope-check'),
+                ('Role-Based Access', 'bi-key'),
+                ('Automated Attendance Records', 'bi-server')
+            ] %}
+            {% for f_title, f_icon in features %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 p-3 h-100" style="background: rgba(255, 255, 255, 0.4) !important;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="p-2.5 rounded-3 text-primary" style="background: rgba(0, 215, 230, 0.08); font-size: 1.3rem;">
+                            <i class="bi {{ f_icon }}"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-0" style="color: var(--navy); font-size: 0.95rem;">{{ f_title }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- User Roles Section -->
+    <div class="mb-5">
+        <h2 class="mb-4 text-center" style="color: var(--navy); font-weight: 800; font-family: 'Poppins', sans-serif;">
+            User Roles
+        </h2>
+        <div class="row g-4">
+            <!-- Student Role -->
+            <div class="col-md-4">
+                <div class="card border-0 h-100 text-center" style="background: rgba(255, 255, 255, 0.45) !important; padding: 2rem !important;">
+                    <div class="p-3 rounded-circle text-primary mx-auto mb-3" style="background: rgba(0, 215, 230, 0.08); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3" style="color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 1.25rem;">Student:</h3>
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-start px-2" style="color: var(--navy); font-size: 0.9rem; opacity: 0.9;">
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>View attendance</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Track attendance percentage</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Receive notifications</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Faculty Role -->
+            <div class="col-md-4">
+                <div class="card border-0 h-100 text-center" style="background: rgba(255, 255, 255, 0.45) !important; padding: 2rem !important;">
+                    <div class="p-3 rounded-circle text-primary mx-auto mb-3" style="background: rgba(0, 215, 230, 0.08); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                        <i class="bi bi-person-workspace"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3" style="color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 1.25rem;">Faculty:</h3>
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-start px-2" style="color: var(--navy); font-size: 0.9rem; opacity: 0.9;">
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Mark attendance</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Manage classes</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Generate reports</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Admin Role -->
+            <div class="col-md-4">
+                <div class="card border-0 h-100 text-center" style="background: rgba(255, 255, 255, 0.45) !important; padding: 2rem !important;">
+                    <div class="p-3 rounded-circle text-primary mx-auto mb-3" style="background: rgba(0, 215, 230, 0.08); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                        <i class="bi bi-sliders"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3" style="color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 1.25rem;">Admin:</h3>
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-start px-2" style="color: var(--navy); font-size: 0.9rem; opacity: 0.9;">
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Manage students</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Manage faculty</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>View analytics</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-right-short text-primary"></i>
+                            <span>Configure system settings</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Guide Section -->
+    <div>
+        <h2 class="mb-4 text-center" style="color: var(--navy); font-weight: 800; font-family: 'Poppins', sans-serif;">
+            Instructions Page
+        </h2>
+        
+        <div class="card border-0" style="background: rgba(255, 255, 255, 0.45) !important; padding: 2.5rem !important;">
+            <div class="row g-4">
+                <!-- For Students Guide -->
+                <div class="col-lg-4 border-end border-light-subtle pe-lg-4">
+                    <h3 class="fw-bold mb-3" style="color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 1.15rem;">
+                        For Students:
+                    </h3>
+                    <ul class="list-unstyled d-flex flex-column gap-2" style="color: var(--navy); font-size: 0.88rem; opacity: 0.95;">
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Login using college email</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Check attendance dashboard</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>View attendance history</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- For Faculty Guide -->
+                <div class="col-lg-4 border-end border-light-subtle px-lg-4">
+                    <h3 class="fw-bold mb-3" style="color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 1.15rem;">
+                        For Faculty:
+                    </h3>
+                    <ul class="list-unstyled d-flex flex-column gap-2" style="color: var(--navy); font-size: 0.88rem; opacity: 0.95;">
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Login using faculty email</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Manage attendance records</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Generate attendance reports</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- For Admin Guide -->
+                <div class="col-lg-4 ps-lg-4">
+                    <h3 class="fw-bold mb-3" style="color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 1.15rem;">
+                        For Admin:
+                    </h3>
+                    <ul class="list-unstyled d-flex flex-column gap-2" style="color: var(--navy); font-size: 0.88rem; opacity: 0.95;">
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Manage users</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Monitor attendance analytics</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-arrow-right text-primary mt-1"></i>
+                            <span>Export reports</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
