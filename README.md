@@ -217,7 +217,7 @@ Add Screenshot Here
 
 Add Screenshot Here
 
-![Analytics](analytics.png)
+![Analytics](analyticss.png)
 
 ---
 
